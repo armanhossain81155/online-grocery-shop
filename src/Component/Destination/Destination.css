@@ -1,0 +1,47 @@
+.destination-div{
+    border-top: 1px solid rgb(255, 255, 255);
+}
+.main-pick{
+    margin-top: 50px;
+    display:flex;
+}
+.pick-option{
+    width: 500px;
+    height: 300px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: rgb(211, 209, 209);
+}
+.main-pick img{
+    width: 600px;
+}
+.map{
+    margin-left: 100px;
+}
+.pick-option input{
+
+ border-radius: 5px;
+ border: none;
+}
+.search-option{
+    border: none;
+    border-radius: 10px ;
+    line-height: 30px;
+    background-color: rgb(216, 146, 41);
+    color: white;
+    margin-top: 15px;
+    width: 180px;
+}
+.pick-option h5{
+    color: rgb(104, 104, 101);
+}
+.pick-option form{
+    margin-top: 20px;
+}
+.last-page{
+    display: none;
+}
+.date-option{
+    margin-top: 15px;
+    width: 210px;
+}

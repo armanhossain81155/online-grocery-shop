@@ -1,0 +1,21 @@
+
+  .nav a{
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.877);
+    font-weight: bold;
+  }
+  .nav li{
+    display: inline;
+    margin-left: 50px;
+    
+  }
+  .img-logo{
+      margin-right: 500px;
+  }
+  .login-list{
+    background-color: rgb(190, 109, 10);
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  

@@ -1,0 +1,53 @@
+.destination{
+    margin-top: 100px;
+    text-align: center;
+    width: 400px;
+    height: 500px;
+    background-color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    margin-left: 500px;
+    padding-top: 5px;
+    
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 10px rgba(82, 80, 80, 0.5);
+    transition:  width 2s , height 2s;
+    
+}
+.destination:hover{
+    width: 450px;
+    
+    height: 550px;
+}
+.destination input{
+    margin-top: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    width: 300px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid lightgray;
+    
+}
+.createPassSubmit{
+    background-color: rgb(190, 109, 10);
+    line-height: 20px;
+    color: white;
+    cursor: pointer;
+}
+.createLogin{
+    text-decoration: none;
+    color: rgb(141, 123, 104);
+    
+}
+.continue-google{
+    
+    margin-top: 5px;
+    border: none;
+    background-color: rgb(146, 134, 134);
+    color: white;
+   border-radius: 5px;
+   width: 100px;
+    
+}

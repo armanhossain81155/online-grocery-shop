@@ -1,0 +1,12 @@
+.front-img li{
+    display: inline;
+    margin-left: 30px;
+    
+}
+.front-img img{
+    height: 180px;
+    border-radius: 5px;
+}
+.front-img{
+    margin-top: 150px;
+}
