@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
 import map from '../../images/Map.png'
+import Gmap from '../Gmap/Gmap';
 import './Destination.css'
 
 const Destination = () => {
@@ -54,7 +55,7 @@ const Destination = () => {
 
                 </div>
                 <div className="map">
-                    <img src={map} alt="" />
+                    <Gmap></Gmap>
                 </div>
             </div>
         </div>

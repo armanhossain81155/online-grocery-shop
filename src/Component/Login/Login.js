@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import './Login.css'
-
+import GoogleButton from 'react-google-button'
 import { useState } from 'react';
 import firebase from 'firebase/app'
 import "firebase/auth";
 import firebaseConfig from './firebase.config'
+import { useContext } from 'react';
+import { UserContext } from '../../App';
 
 
 
@@ -25,7 +27,6 @@ const Login = () => {
       isFieldValid: true,
       name: '',
       password: '',
-      photo: '',
       email: '',
       confirmPassword: '',
       error: ''
@@ -33,32 +34,52 @@ const Login = () => {
   
   
     });
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+    const handleResponse = (res, redirect) => {
+      setUser(res) ;
+      setLoggedInUser(res);
+      if(redirect){
+        history.replace(from);
+      }
+    }
+    var googleProvider = new firebase.auth.GoogleAuthProvider();
     const handleGoogleSignIn = () => {
       firebase.auth()
-  .signInWithPopup(googleProvider)
-  .then((result) => {
-    
-    var credential = result.credential;
+      .signInWithPopup(googleProvider)
+      .then( res => {
+        const {email, displayName} = res.user
+    const newUserInfo = {isSignedIn:true, 
+    name: displayName,
+    email: email
 
-    
-    var token = credential.accessToken;
-    
-    var user = result.user;
-    console.log(user)
-    
-  }).catch((error) => {
-   
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    
-    var email = error.email;
-    
-    var credential = error.credential;
-    console.log(errorMessage, errorCode,email,credential)
-    
-  });
     }
+    setUser(newUserInfo)
+    setLoggedInUser(newUserInfo)
+    
+    history.replace(from);
+       
+        
+       
+      }).catch((error) => {
+        
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        
+        var email = error.email;
+       
+        var credential = error.credential;
+        
+      });
+    }
+
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext)
+    const history = useHistory();
+    const location = useLocation();
+
+    let { from } = location.state || { from: { pathname: "/destination" } };
+
+
+  
 
     const handleBlur = (e) => {
       // console.log(e.target.name, e.target.value)
@@ -103,15 +124,16 @@ const Login = () => {
 
           firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
           .then( res => {
-            
-            
-            
             const newUserInfo = { ...user}
             
             setUser(newUserInfo)
             setNewUser(newUserInfo)
+            setLoggedInUser(newUserInfo)
+            history.replace(from)
+            console.log(newUserInfo)
             
-            updateUserName(user.name)
+            
+            
            
                
           })
@@ -120,23 +142,30 @@ const Login = () => {
           .catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
-            // ..
+        
             console.log(errorMessage, errorCode)
           });
 
         }
         if(!newUser && user.email && user.password){
           firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-  .then((userCredential) => {
+  .then( res => {
+    const {email, displayName} = res.user
+    const newUserInfo = {isSignedIn:true, 
+    name: displayName,
+    email: email
+
+    }
+    setUser(newUserInfo)
+    setLoggedInUser(newUserInfo)
     
-    var user = userCredential.user;
-    console.log(user)
-    
+    history.replace(from);
   })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorMessage, errorCode)
+  .catch( error => {
+    
+    const errorMessage = error.message;
+   
+    console.log(errorMessage)
   });
         }
 
@@ -151,11 +180,9 @@ const updateUserName = name => {
     displayName: name
    
   }).then(() => {
-    // Update successful
-    // ...
+    
   }).catch((error) => {
-    // An error occurred
-    // ...
+ 
   });  
 }
  
@@ -205,7 +232,9 @@ const updateUserName = name => {
             }
             or
             <br />
-            <button onCLick={handleGoogleSignIn} className="continue-google">Sign In with Google</button>
+            <GoogleButton className="continue-google"
+            onClick={handleGoogleSignIn} />
+
             
         </div>
     );
