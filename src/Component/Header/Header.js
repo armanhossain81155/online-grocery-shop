@@ -12,7 +12,7 @@ const Header = () => {
 
 
 
-  console.log(loggedInUser)
+ 
   return (
     <div>
       <nav className='nav'>

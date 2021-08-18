@@ -22,6 +22,7 @@ if(firebase.apps.length === 0){
 
 const Login = () => {
     const [newUser, setNewUser] = useState(true);
+    const [error, setError] = useState('')
     const [user, setUser] = useState({
       isSignedIn : false ,
       isFieldValid: true,
@@ -35,13 +36,13 @@ const Login = () => {
   
     });
 
-    const handleResponse = (res, redirect) => {
-      setUser(res) ;
-      setLoggedInUser(res);
-      if(redirect){
-        history.replace(from);
-      }
-    }
+    // const handleResponse = (res, redirect) => {
+    //   setUser(res) ;
+    //   setLoggedInUser(res);
+    //   if(redirect){
+    //     history.replace(from);
+    //   }
+    // }
     var googleProvider = new firebase.auth.GoogleAuthProvider();
     const handleGoogleSignIn = () => {
       firebase.auth()
@@ -97,17 +98,15 @@ const Login = () => {
       
       }
       if(e.target.name === 'confirmPassword'){
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+        const password = e.target.name = 'password'
+          const confirmPassword = e.target.name = 'confirmPassword'
         if(password !== confirmPassword){
+          
           isFieldValid = false
-          
-          
-          
-        }
-       
-
+        }else {
+          isFieldValid =true        }
       }
+      
       
       
       
@@ -116,20 +115,27 @@ const Login = () => {
         newUserInfo[e.target.name] = e.target.value;
         
         setUser(newUserInfo)
+        
       }
+      
     }
 
     const handleSubmit = (e) => {
-        if(newUser && user.email && user.password){
+        if(newUser && user.name &&  user.email && user.password && user.confirmPassword){
 
           firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
           .then( res => {
-            const newUserInfo = { ...user}
-            
+            console.log(res)
+         
+            const newUserInfo = {...user
+        
+            }
             setUser(newUserInfo)
             setNewUser(newUserInfo)
             setLoggedInUser(newUserInfo)
-            history.replace(from)
+            
+              history.replace(from)
+            
             console.log(newUserInfo)
             
             
@@ -148,43 +154,49 @@ const Login = () => {
 
         }
         if(!newUser && user.email && user.password){
-          firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-  .then( res => {
-    const {email, displayName} = res.user
-    const newUserInfo = {isSignedIn:true, 
-    name: displayName,
-    email: email
 
-    }
-    setUser(newUserInfo)
-    setLoggedInUser(newUserInfo)
-    
-    history.replace(from);
-  })
-  .catch( error => {
-    
-    const errorMessage = error.message;
-   
-    console.log(errorMessage)
-  });
-        }
+          firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+          .then( res => {
+            console.log(res)
+            const {email, displayName} = res.user
+            const newUserInfo = {
+              isSignedIn:true,
+              name: displayName,
+              email: email
+            }
+            setUser(newUserInfo)
+            
+            setLoggedInUser(newUserInfo)
+            history.replace(from);
+
+            console.log(newUserInfo)
+          })
+          .catch( error => {
+           const newUserInfo = {...user}
+           newUserInfo.error = error.message
+           setUser(newUserInfo)
+          });
+
+         }
 
         e.preventDefault();
+
+     
        
     }
 
-const updateUserName = name => {
-  const user = firebase.auth().currentUser;
+// const updateUserName = name => {
+//   const user = firebase.auth().currentUser;
 
-  user.updateProfile({
-    displayName: name
+//   user.updateProfile({
+//     displayName: name
    
-  }).then(() => {
+//   }).then(() => {
     
-  }).catch((error) => {
+//   }).catch((error) => {
  
-  });  
-}
+//   });  
+// }
  
     return (
         <div className="destination">
@@ -197,18 +209,22 @@ const updateUserName = name => {
             
             <form onSubmit={handleSubmit} >
             {
-              newUser && <input name="name" onBlur={handleBlur}  placeholder="Type here name" required/>
+              newUser &&
+               <input name="name" onBlur={handleBlur}  placeholder="Type here name"  required />
             }
             <br />
             <input name="email"  onBlur={handleBlur}  placeholder="write your email" required />
             <br />
-            <input name="password" type="password" id="password" onBlur={handleBlur}  placeholder="Password" required/>
+            <input name="password" type="password" id="password" onBlur={handleBlur}  placeholder="Password(Must have 8 characters, One Capital letter and one number) " required/>
             <br />
         
             {
               newUser && <input name="confirmPassword" id="confirmPassword" type="password" onBlur={handleBlur} placeholder="Confirm password" required/>
             }
             <br />
+         
+            <p style={{color:'red'}}>{user.error}</p>
+            
             
           {
             newUser ? <input className="createPassSubmit" type="submit" value="Create new account" />
@@ -241,3 +257,29 @@ const updateUserName = name => {
 };
 
 export default Login;
+
+
+
+
+
+// firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+// .then( res => {
+//   const {email, displayName} = res.user
+//   const newUserInfo = { 
+//   name: displayName,
+//   email: email
+
+//   }
+//   setUser(newUserInfo)
+//   setLoggedInUser(newUserInfo)
+  
+//   history.replace(from);
+//   console.log(newUserInfo)
+  
+// })
+// .catch( error => {
+//   console.log(error)
+  
+  
+// });
+     

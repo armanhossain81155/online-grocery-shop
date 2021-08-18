@@ -26,6 +26,8 @@ const Destination = () => {
             setDestiantion(pickTo)
             setLoggedInUser(pickTo)
         }
+
+        e.preventDefault()
         
     }
     return (
@@ -34,7 +36,7 @@ const Destination = () => {
             <div className="main-pick">
                 <div className="pick-option">
 
-                    <form action="">
+                    <form action="handleDestination">
                         <h5>Pick From</h5>
                         <input name="pickFrom" onBlur={handleDestination} type="text" required/>
                         <br />
